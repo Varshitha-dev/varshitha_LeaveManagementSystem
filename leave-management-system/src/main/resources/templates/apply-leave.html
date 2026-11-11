@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Apply Leave</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><div class="layout">
+<aside class="sidebar"><div class="brand"><span class="brand-mark">✦</span> TeamHub</div><nav><a th:href="@{/employee/dashboard}">▦ Dashboard</a><a class="active" th:href="@{/employee/apply}">＋ Apply Leave</a><a th:href="@{/employee/history}">▤ Leave History</a></nav><div class="sidebar-bottom"><strong th:text="${employee.fullName}">Employee</strong><form th:action="@{/logout}" method="post"><button class="logout">↪ Sign out</button></form></div></aside>
+<main class="main"><header class="topbar"><div><span class="eyebrow">LEAVE MANAGEMENT</span><h1>Apply for leave</h1><p class="muted">Submit a request for your manager to review.</p></div><a class="btn secondary" th:href="@{/employee/dashboard}">← Back</a></header>
+<div class="alert error" th:if="${error}" th:text="${error}"></div>
+<div class="content-grid"><section class="panel form-panel"><h2>Leave request details</h2>
+<form th:action="@{/employee/apply}" method="post" id="leaveForm">
+<label for="leaveType">Leave type</label><select id="leaveType" name="leaveType" required><option th:each="t : ${leaveTypes}" th:value="${t}" th:text="${t}">ANNUAL</option></select>
+<div class="two-col"><div><label for="startDate">Start date</label><input id="startDate" name="startDate" type="date" th:min="${today}" required></div><div><label for="endDate">End date</label><input id="endDate" name="endDate" type="date" th:min="${today}" required></div></div>
+<label for="reason">Reason</label><textarea id="reason" name="reason" rows="4" maxlength="500" placeholder="Briefly explain why you need leave..." required></textarea>
+<p class="muted small">Leave duration is counted in calendar days, including the start and end dates.</p>
+<button class="btn primary" type="submit">Submit request</button></form></section>
+<aside class="panel balance-panel"><h2>Your available balance</h2><div class="balance-row" th:each="b : ${balances}"><div><strong th:text="${b.leaveType}">ANNUAL</strong><span class="muted small" th:text="${b.usedDays + ' used / ' + b.totalDays + ' total'}">0 used</span></div><strong class="balance-value" th:text="${b.remainingDays + ' days'}">12 days</strong></div><div class="tip">Requests are checked against your remaining balance and existing pending or approved leave dates.</div></aside></div>
+</main></div>
+<script>
+const start = document.getElementById('startDate'), end = document.getElementById('endDate');
+start.addEventListener('change', () => { end.min = start.value; if (end.value && end.value < start.value) end.value = start.value; });
+</script></body></html>

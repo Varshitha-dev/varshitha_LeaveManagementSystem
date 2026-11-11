@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | TeamHub</title><link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="login-page">
+<div class="login-card">
+    <div class="brand large"><span class="brand-mark">✦</span> TeamHub</div>
+    <p class="muted">Leave Management Portal</p>
+    <h1>Welcome back</h1><p class="muted">Sign in to continue to your workspace.</p>
+    <div class="alert error" th:if="${param.error}">Invalid username or password.</div>
+    <div class="alert success" th:if="${param.logout}">You have been logged out.</div>
+    <form th:action="@{/login}" method="post">
+        <label>Username</label><input name="username" type="text" placeholder="Enter username" required autofocus>
+        <label>Password</label><input name="password" type="password" placeholder="Enter password" required>
+        <button class="btn primary full" type="submit">Sign in</button>
+    </form>
+    <div class="demo-box"><strong>Demo accounts</strong><br>Manager: <code>manager / Manager@123</code><br>Employee: <code>employee / Employee@123</code></div>
+</div>
+</body></html>

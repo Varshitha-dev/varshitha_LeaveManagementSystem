@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Employee Dashboard</title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body>
+<div class="layout">
+<aside class="sidebar"><div class="brand"><span class="brand-mark">✦</span> TeamHub</div>
+<nav><a class="active" th:href="@{/employee/dashboard}">▦ Dashboard</a><a th:href="@{/employee/apply}">＋ Apply Leave</a><a th:href="@{/employee/history}">▤ Leave History</a></nav>
+<div class="sidebar-bottom"><span class="muted small">Signed in as</span><strong th:text="${employee.fullName}">Employee</strong><form th:action="@{/logout}" method="post"><button class="logout" type="submit">↪ Sign out</button></form></div></aside>
+<main class="main">
+<header class="topbar"><div><span class="eyebrow">EMPLOYEE PORTAL</span><h1>Good day, <span th:text="${employee.fullName}">Employee</span></h1><p class="muted">Here is your leave overview.</p></div><div class="avatar" th:text="${#strings.substring(employee.fullName,0,1)}">E</div></header>
+<div class="alert success" th:if="${success}" th:text="${success}"></div><div class="alert error" th:if="${error}" th:text="${error}"></div>
+<section class="stats">
+<div class="stat-card" th:each="b : ${balances}"><div class="stat-top"><span th:text="${b.leaveType}">ANNUAL</span><span class="stat-icon">◷</span></div><div class="stat-number" th:text="${b.remainingDays}">12</div><div class="muted small">days remaining of <span th:text="${b.totalDays}">12</span></div><div class="progress"><span th:style="'width:' + (${b.totalDays == 0 ? 0 : b.usedDays * 100 / b.totalDays}) + '%'"></span></div></div>
+</section>
+<section class="panel">
+<div class="section-head"><div><h2>Recent leave requests</h2><p class="muted">Track the status of your applications.</p></div><a class="btn primary" th:href="@{/employee/apply}">＋ Apply for leave</a></div>
+<div class="table-wrap"><table><thead><tr><th>Leave type</th><th>Dates</th><th>Days</th><th>Reason</th><th>Status</th></tr></thead>
+<tbody><tr th:each="r : ${requests}"><td th:text="${r.leaveType}">ANNUAL</td><td><span th:text="${r.startDate}"></span> – <span th:text="${r.endDate}"></span></td><td th:text="${r.days}">2</td><td th:text="${r.reason}">Family</td><td><span class="status" th:classappend="${#strings.toLowerCase(r.status)}" th:text="${r.status}">PENDING</span></td></tr>
+<tr th:if="${#lists.isEmpty(requests)}"><td colspan="5" class="empty">No leave requests yet. Apply for leave to get started.</td></tr></tbody></table></div>
+</section>
+</main></div></body></html>
